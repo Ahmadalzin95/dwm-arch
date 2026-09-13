@@ -5,6 +5,9 @@ NF=$(xrdb -query | awk '/dwm.normfgcolor/ {print $2}')
 SB=$(xrdb -query | awk '/dwm.selbgcolor/ {print $2}')
 SF=$(xrdb -query | awk '/dwm.selfgcolor/ {print $2}')
 
+# Fallback colors if wallust/xrdb hasn't populated them yet
+NB="${NB:-#222222}"; NF="${NF:-#bbbbbb}"; SB="${SB:-#005577}"; SF="${SF:-#eeeeee}"
+
 options="󰖩  WIFI\n󰂯  Bluetooth\n󱘖  VPN\n󰐥  Shutdown\n󰜉  Reboot"
 
 chosen=$(printf "$options" | dmenu -nb "$NB" -nf "$NF" -sb "$SB" -sf "$SF" -i -c -l 12 -p "System:")

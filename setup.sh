@@ -20,7 +20,7 @@ sudo pacman -S --needed --noconfirm \
     pipewire pipewire-pulse pipewire-alsa wireplumber bluez bluez-utils \
     brightnessctl pamixer \
     maim slop xclip xdotool nsxiv imagemagick \
-    xorg-xset xorg-xrandr xorg-xrdb xorg-xsetroot xorg-setxkbmap xorg-xprop \
+    xorg-xset xorg-xrandr xorg-xrdb xorg-xsetroot xorg-setxkbmap xorg-xprop xorg-xlsclients \
     adwaita-icon-theme unzip xdg-desktop-portal-gtk curl \
     autorandr arandr \
     ttf-jetbrains-mono-nerd
