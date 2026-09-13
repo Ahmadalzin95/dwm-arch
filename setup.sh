@@ -92,8 +92,16 @@ gtk-application-prefer-dark-theme=1
 EOF
 cp "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
 
-# Wallust installation (AUR)
-yay -S --needed --noconfirm wallust
+# Wallust installation (distro-agnostic static musl binary — avoids AUR)
+WAL_TAG="3.4.0"
+WAL_FILE="3.3.0"
+WAL_URL="https://codeberg.org/explosion-mental/wallust/releases/download/${WAL_TAG}/wallust-${WAL_FILE}-x86_64-unknown-linux-musl.tar.gz"
+TEMP_DIR=$(mktemp -d)
+curl -L "$WAL_URL" -o "$TEMP_DIR/wallust.tar.gz"
+tar -xzf "$TEMP_DIR/wallust.tar.gz" -C "$TEMP_DIR"
+sudo mv "$TEMP_DIR/wallust" /usr/local/bin/
+sudo chmod +x /usr/local/bin/wallust
+rm -rf "$TEMP_DIR"
 
 # Wallust templates and config
 mkdir -p "$HOME/.config/wallust/templates"
