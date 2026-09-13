@@ -25,18 +25,17 @@ sudo pacman -S --needed --noconfirm \
     autorandr arandr \
     ttf-jetbrains-mono-nerd
 
-# Install AUR helper (yay) — needed for AUR packages below
-if ! command -v yay >/dev/null 2>&1; then
-    echo "Building yay (AUR helper)"
-    YAY_TMP=$(mktemp -d)
-    git clone https://aur.archlinux.org/yay.git "$YAY_TMP/yay"
-    cd "$YAY_TMP/yay" && makepkg -si --noconfirm
-    cd "$REPO_ROOT"
-    rm -rf "$YAY_TMP"
-fi
+aur_install() {
+    local pkg tmp
+    for pkg in "$@"; do
+        pacman -Qq "$pkg" >/dev/null 2>&1 && continue   # already installed -> skip
+        tmp=$(mktemp -d)
+        git clone "https://aur.archlinux.org/$pkg.git" "$tmp/$pkg"
+        ( cd "$tmp/$pkg" && makepkg -si --noconfirm )
+        rm -rf "$tmp"
+    done
+}
 
-# AUR packages
-yay -S --needed --noconfirm arc-gtk-theme gtk-engine-murrine
 
 # Image viewer defaults
 xdg-mime default nsxiv.desktop image/jpeg
@@ -48,11 +47,11 @@ mkdir -p "$HOME/.config/dunst" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0" \
          "$HOME/.themes" "$HOME/.icons" "$HOME/.local/bin" "$HOME/.dwm" \
          "$HOME/.local/share/fonts"
 
-# Install i3lock-color (AUR)
-yay -S --needed --noconfirm i3lock-color
+# Install i3lock-color
+aur_install i3lock-color
 
-# Betterlockscreen setup (AUR)
-yay -S --needed --noconfirm betterlockscreen
+# Betterlockscreen setup
+aur_install betterlockscreen
 FIXED_WALL="$REPO_ROOT/assets/lock-wp.jpg"
 [ -f "$FIXED_WALL" ] && betterlockscreen -u "$FIXED_WALL" --fx blur
 
