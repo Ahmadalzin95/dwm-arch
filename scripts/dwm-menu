@@ -11,10 +11,10 @@ chosen=$(printf "$options" | dmenu -nb "$NB" -nf "$NF" -sb "$SB" -sf "$SF" -i -c
 
 case "$chosen" in
     *WIFI)
-        gnome-terminal -- nmtui
+        alacritty -e nmtui
         ;;
     *Bluetooth)
-        gnome-terminal -- bluetoothctl
+        alacritty -e bluetoothctl
         ;;
     *VPN)
         vpn_choice=$(nmcli -g NAME,TYPE connection show | grep vpn | cut -d: -f1 | dmenu -i -c -l 8 -p "VPN:")

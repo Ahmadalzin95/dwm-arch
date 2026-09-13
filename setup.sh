@@ -16,7 +16,7 @@ sudo pacman -S --needed --noconfirm \
     xorg-server xorg-xinit mesa \
     libx11 libxinerama libxft libxrandr libxss \
     glib2 pango gtk3 gdk-pixbuf2 libxdg-basedir dbus \
-    feh picom dunst libnotify \
+    alacritty feh picom dunst libnotify \
     pipewire pipewire-pulse pipewire-alsa wireplumber bluez bluez-utils \
     brightnessctl pamixer \
     maim slop xclip xdotool nsxiv imagemagick \

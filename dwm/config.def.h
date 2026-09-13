@@ -99,7 +99,7 @@ static const char *dmenucmddesktop[] = {
     "-sf", selfgcolor, 
     NULL 
 };
-static const char *termcmd[]  = { "gnome-terminal", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
 static const char *sysmenucmd[] = { "dwm-menu", NULL };
 static const char *appmanager[] = { "app_manager", NULL };
 static const char *layout_toggle[] = { "layout_toggle", NULL };
