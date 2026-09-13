@@ -1,0 +1,16 @@
+backend = "full"
+color_space = "lab"
+palette = "dark16"
+check_contrast = true
+saturation = 20
+fallback_generator = "complementary"
+
+[templates]
+xres.src = "xresources.template"
+xres.dst = "~/.cache/wallust/colors.Xresources"
+
+dunst.src = "dunstrc.template"
+dunst.dst = "~/.config/dunst/dunstrc"
+
+sequences.src = "sequences.template"
+sequences.dst = "~/.cache/wallust/sequences"

@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# Theme & Dark
+export XDG_CURRENT_DESKTOP=Unity
+export GTK_THEME=Material-Black-Blueberry
+export ADW_DISABLE_PORTAL=1
+export XCURSOR_THEME=macOS
+# Required for Dark Mode
+/usr/lib/xdg-desktop-portal &
+/usr/lib/xdg-desktop-portal-gtk &
+
+dbus-update-activation-environment --systemd --all &
+
+# Disable Screen Blanking & Sleep
+xset s off
+xset s noblank
+xset -dpms
+
+# Set keyboard layout
+(sleep 1; setxkbmap -layout us,de,ara) &
+
+# Dynamic Theme Application (Wallust v3)
+DEFAULT_WP="$HOME/suckless/assets/wp.jpg"
+CACHE_WP="$HOME/.cache/wallust/wallpaper"
+
+if [ -f "$CACHE_WP" ]; then
+    WP_PATH=$(cat "$CACHE_WP")
+else
+    WP_PATH="$DEFAULT_WP"
+fi
+
+if [ -f "$WP_PATH" ]; then
+    # Wallust generates Xresources and Dunst config
+    wallust run "$WP_PATH"
+    # Set the background
+    (sleep 1 && feh --bg-scale "$WP_PATH") &
+else
+    # Fallback if image is missing
+    xrdb -merge "$HOME/.Xresources" &
+fi
+xrdb -merge "$HOME/.Xresources"
+
+# Start compositor (Transparency/Blur)
+(sleep 1 && picom -b) &
+
+# Status Bar
+slstatus &
+
+# Start Notification Daemon
+dunst &
+
+# Load cursor
+xsetroot -cursor_name left_ptr &
+
+# Start: Execute DWM
+exec dwm

@@ -1,0 +1,14 @@
+#!/bin/sh
+# List desktop applications for dmenu (English comments)
+
+# Define directories containing .desktop files
+# Including system, local, and snap paths
+dirs="/usr/share/applications /usr/local/share/applications $HOME/.local/share/applications /var/lib/snapd/desktop/applications"
+
+# Iterate through directories and list files
+for dir in $dirs; do
+    if [ -d "$dir" ]; then
+        # Find .desktop files and strip the path and extension
+        find "$dir" -maxdepth 1 -name "*.desktop" -exec basename {} .desktop \;
+    fi
+done | sort -u

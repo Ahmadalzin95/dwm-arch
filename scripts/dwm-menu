@@ -1,0 +1,35 @@
+#!/bin/sh
+
+NB=$(xrdb -query | awk '/dwm.normbgcolor/ {print $2}')
+NF=$(xrdb -query | awk '/dwm.normfgcolor/ {print $2}')
+SB=$(xrdb -query | awk '/dwm.selbgcolor/ {print $2}')
+SF=$(xrdb -query | awk '/dwm.selfgcolor/ {print $2}')
+
+options="󰖩  WIFI\n󰂯  Bluetooth\n󱘖  VPN\n󰐥  Shutdown\n󰜉  Reboot"
+
+chosen=$(printf "$options" | dmenu -nb "$NB" -nf "$NF" -sb "$SB" -sf "$SF" -i -c -l 12 -p "System:")
+
+case "$chosen" in
+    *WIFI)
+        gnome-terminal -- nmtui
+        ;;
+    *Bluetooth)
+        gnome-terminal -- bluetoothctl
+        ;;
+    *VPN)
+        vpn_choice=$(nmcli -g NAME,TYPE connection show | grep vpn | cut -d: -f1 | dmenu -i -c -l 8 -p "VPN:")
+        if [ -n "$vpn_choice" ]; then
+            if nmcli connection show --active | grep -q "$vpn_choice"; then
+                nmcli connection down "$vpn_choice"
+            else
+                nmcli connection up "$vpn_choice"
+            fi
+        fi
+        ;;
+    *Shutdown)
+        poweroff
+        ;;
+    *Reboot)
+        reboot
+        ;;
+esac
