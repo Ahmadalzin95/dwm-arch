@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
-if ! bluetoothctl show | grep -q "Powered: yes"; then
+if ! ls /sys/class/bluetooth/*/ >/dev/null 2>&1; then
+    echo "󰂲"
+    exit 0
+fi
+
+if ! timeout 1 bluetoothctl show | grep -q "Powered: yes"; then
     echo "󰂲" # Bluetooth is OFF
     exit 0
 fi
 
-if bluetoothctl devices Connected | grep -q "Device"; then
+if timeout 1 bluetoothctl devices Connected | grep -q "Device"; then
     echo "󰂱" # Bluetooth is CONNECTED
 else
     echo "󰂯" # Bluetooth is ON but DISCONNECTED
