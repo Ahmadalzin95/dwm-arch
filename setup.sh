@@ -25,6 +25,9 @@ sudo pacman -S --needed --noconfirm \
     autorandr arandr \
     ttf-jetbrains-mono-nerd
 
+# Enable system services (bluez is installed above but its service is off by default)
+sudo systemctl enable --now bluetooth.service
+
 aur_install() {
     local pkg tmp
     for pkg in "$@"; do
