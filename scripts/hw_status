@@ -3,15 +3,14 @@
 
 case $1 in
     wifi_essid)
-        # Find active wifi interface and get ESSID
-        INTERFACE=$(ip link | grep -E 'wlan|wlp' | awk '{print $2}' | tr -d ':' | head -n 1)
-        # If connected, show ESSID, else show 'Disconnected'
-        [ -n "$INTERFACE" ] && iwgetid -r "$INTERFACE" || echo "off"
+        # SSID of the active WiFi connection (via NetworkManager)
+        ESSID=$(nmcli -t -f active,ssid dev wifi 2>/dev/null | awk -F: '/^yes/{print $2; exit}')
+        [ -n "$ESSID" ] && echo "$ESSID" || echo "off"
         ;;
     wifi_perc)
-        # Find active wifi interface and get signal strength
-        INTERFACE=$(ip link | grep -E 'wlan|wlp' | awk '{print $2}' | tr -d ':' | head -n 1)
-        [ -n "$INTERFACE" ] && awk 'NR==3 {print int($3*100/70)}' /proc/net/wireless || echo "0"
+        # Signal strength (%) of the active WiFi connection (via NetworkManager)
+        PERC=$(nmcli -t -f active,signal dev wifi 2>/dev/null | awk -F: '/^yes/{print $2; exit}')
+        [ -n "$PERC" ] && echo "$PERC" || echo "0"
         ;;
     battery)
         # Find the first available battery (BAT0 or BAT1)
